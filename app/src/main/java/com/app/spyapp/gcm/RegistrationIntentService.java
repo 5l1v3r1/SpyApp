@@ -21,15 +21,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.app.spyapp.R;
 import com.app.spyapp.SpyApp;
-import com.google.android.gms.gcm.GcmPubSub;
+import com.app.spyapp.common.WriteLog;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
-
-import java.io.IOException;
 
 public class RegistrationIntentService extends IntentService {
 
@@ -57,7 +54,7 @@ public class RegistrationIntentService extends IntentService {
             String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             // [END get_token]
-            Log.i(TAG, "GCM Registration Token: " + token);
+            WriteLog.E(TAG, "GCM Registration Token: " + token);
             SharedPreferences.Editor editor = spyApp.getSharedPreferences().edit();
             editor.putString(QuickstartPreferences.TOKEN, token);
             editor.commit();
@@ -71,7 +68,7 @@ public class RegistrationIntentService extends IntentService {
             sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, true).apply();
             // [END register_for_gcm]
         } catch (Exception e) {
-            Log.d(TAG, "Failed to complete token refresh", e);
+            WriteLog.E(TAG, "Failed to complete token refresh");
             // If an exception happens while fetching the new token or updating our registration data
             // on a third-party server, this ensures that we'll attempt the update at a later time.
             sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false).apply();

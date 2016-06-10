@@ -7,9 +7,9 @@ import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.SurfaceView;
 
+import com.app.spyapp.common.WriteLog;
 import com.app.spyapp.service.BookmarkHistoryChangeService;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class MainActivity extends Activity {
         startService(smsIntent);
 
 
-        Log.e(TAG, "onCreate");
+        WriteLog.E(TAG, "onCreate");
 
 
     }

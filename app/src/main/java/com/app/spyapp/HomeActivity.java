@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.app.spyapp.common.WriteLog;
 import com.app.spyapp.gcm.QuickstartPreferences;
@@ -146,7 +145,7 @@ public class HomeActivity extends AppCompatActivity {
                 apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
                         .show();
             } else {
-                Log.i(HomeActivity.class.getSimpleName(), "This device is not supported.");
+               WriteLog.E(HomeActivity.class.getSimpleName(), "This device is not supported.");
                 finish();
             }
             return false;

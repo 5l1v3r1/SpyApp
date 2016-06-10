@@ -17,6 +17,7 @@ import com.app.spyapp.R;
 import com.app.spyapp.SpyApp;
 import com.app.spyapp.common.Const;
 import com.app.spyapp.common.Utils;
+import com.app.spyapp.common.WriteLog;
 import com.app.spyapp.model.CallRecordModel;
 
 import java.io.File;
@@ -62,14 +63,14 @@ public class RecordService
             try {
                 dir.mkdirs();
             } catch (Exception e) {
-                Log.e("CallRecorder", "RecordService::makeOutputFile unable to create directory " + dir + ": " + e);
+                WriteLog.E("CallRecorder", "RecordService::makeOutputFile unable to create directory " + dir + ": " + e);
                 Toast t = Toast.makeText(getApplicationContext(), "CallRecorder was unable to create the directory " + dir + " to store recordings: " + e, Toast.LENGTH_LONG);
                 t.show();
                 return null;
             }
         } else {
             if (!dir.canWrite()) {
-                Log.e(TAG, "RecordService::makeOutputFile does not have write permission for directory: " + dir);
+                WriteLog.E(TAG, "RecordService::makeOutputFile does not have write permission for directory: " + dir);
                 Toast t = Toast.makeText(getApplicationContext(), "CallRecorder does not have write permission for the directory directory " + dir + " to store recordings", Toast.LENGTH_LONG);
                 t.show();
                 return null;
@@ -120,7 +121,7 @@ public class RecordService
     public void onCreate() {
         super.onCreate();
         recorder = new MediaRecorder();
-        Log.i("CallRecorder", "onCreate created MediaRecorder object");
+        WriteLog.E("CallRecorder", "onCreate created MediaRecorder object");
     }
 
     public void onStart(Intent intent, int startId) {
@@ -130,7 +131,7 @@ public class RecordService
 
         //public int onStartCommand(Intent intent, int flags, int startId)
         //{
-        Log.i("CallRecorder", "RecordService::onStartCommand called while isRecording:" + isRecording);
+        WriteLog.E("CallRecorder", "RecordService::onStartCommand called while isRecording:" + isRecording);
 
         if (isRecording) return;
 
@@ -158,7 +159,7 @@ public class RecordService
             return; //return 0;
         }
 
-        Log.i("CallRecorder", "RecordService will config MediaRecorder with audiosource: " + audiosource + " audioformat: " + audioformat);
+        WriteLog.E("CallRecorder", "RecordService will config MediaRecorder with audiosource: " + audiosource + " audioformat: " + audioformat);
         try {
             // These calls will throw exceptions unless you set the 
             // android.permission.RECORD_AUDIO permission for your app
@@ -175,7 +176,7 @@ public class RecordService
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
             recorder.setOutputFile(recording.getAbsolutePath());
-            Log.d("CallRecorder", "set file: " + recording);
+            WriteLog.E("CallRecorder", "set file: " + recording);
             //recorder.setMaxDuration(msDuration); //1000); // 1 seconds
             //recorder.setMaxFileSize(bytesMax); //1024*1024); // 1KB
 
@@ -198,7 +199,7 @@ public class RecordService
                 recorder = null;
                 return; //return 0; //START_STICKY;
             }
-            Log.d("CallRecorder", "recorder.prepare() returned");
+            WriteLog.E("CallRecorder", "recorder.prepare() returned");
 
             recorder.start();
             isRecording = true;
@@ -208,7 +209,7 @@ public class RecordService
             Toast t = Toast.makeText(getApplicationContext(), "CallRecorder was unable to start recording: " + e, Toast.LENGTH_LONG);
             t.show();
 
-            Log.e("CallRecorder", "RecordService::onStart caught unexpected exception", e);
+            WriteLog.E("CallRecorder", "RecordService::onStart caught unexpected exception");
             recorder = null;
         }
 
@@ -219,7 +220,7 @@ public class RecordService
         super.onDestroy();
 
         if (null != recorder) {
-            Log.i("CallRecorder", "RecordService::onDestroy calling recorder.release()");
+            WriteLog.E("CallRecorder", "RecordService::onDestroy calling recorder.release()");
             isRecording = false;
             recorder.release();
             Toast t = Toast.makeText(getApplicationContext(), "CallRecorder finished recording call to " + recording, Toast.LENGTH_LONG);
@@ -285,13 +286,13 @@ public class RecordService
 
     // MediaRecorder.OnInfoListener
     public void onInfo(MediaRecorder mr, int what, int extra) {
-        Log.i("CallRecorder", "RecordService got MediaRecorder onInfo callback with what: " + what + " extra: " + extra);
+        WriteLog.E("CallRecorder", "RecordService got MediaRecorder onInfo callback with what: " + what + " extra: " + extra);
         isRecording = false;
     }
 
     // MediaRecorder.OnErrorListener
     public void onError(MediaRecorder mr, int what, int extra) {
-        Log.e("CallRecorder", "RecordService got MediaRecorder onError callback with what: " + what + " extra: " + extra);
+        WriteLog.E("CallRecorder", "RecordService got MediaRecorder onError callback with what: " + what + " extra: " + extra);
         isRecording = false;
         mr.release();
     }

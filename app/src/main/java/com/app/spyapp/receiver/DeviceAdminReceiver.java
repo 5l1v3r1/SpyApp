@@ -2,10 +2,10 @@ package com.app.spyapp.receiver;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.app.spyapp.R;
+import com.app.spyapp.common.WriteLog;
 
 /**
  * Created by Ankit on 4/21/2016.
@@ -19,7 +19,7 @@ public class DeviceAdminReceiver extends android.app.admin.DeviceAdminReceiver {
         super.onEnabled(context, intent);
         Toast.makeText(context, R.string.device_admin_enabled,
                 Toast.LENGTH_LONG).show();
-        Log.d(TAG, "onEnabled");
+        WriteLog.E(TAG, "onEnabled");
     }
 
     /** Called when this application is no longer the device administrator. */
@@ -28,24 +28,24 @@ public class DeviceAdminReceiver extends android.app.admin.DeviceAdminReceiver {
         super.onDisabled(context, intent);
         Toast.makeText(context, R.string.device_admin_disabled,
                 Toast.LENGTH_LONG).show();
-        Log.d(TAG, "onDisabled");
+        WriteLog.E(TAG, "onDisabled");
     }
 
     @Override
     public void onPasswordChanged(Context context, Intent intent) {
         super.onPasswordChanged(context, intent);
-        Log.d(TAG, "onPasswordChanged");
+        WriteLog.E(TAG, "onPasswordChanged");
     }
 
     @Override
     public void onPasswordFailed(Context context, Intent intent) {
         super.onPasswordFailed(context, intent);
-        Log.d(TAG, "onPasswordFailed");
+        WriteLog.E(TAG, "onPasswordFailed");
     }
 
     @Override
     public void onPasswordSucceeded(Context context, Intent intent) {
         super.onPasswordSucceeded(context, intent);
-        Log.d(TAG, "onPasswordSucceeded");
+        WriteLog.E(TAG, "onPasswordSucceeded");
     }
 }
