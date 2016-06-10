@@ -43,19 +43,11 @@ public class RecordService
     private File recording = null;
     ;
     private SpyApp spyApp;
+//    int audiosource = Const.AUDIO_SOURCE;
+//    int audioformat = Const.AUDIO_FORMAT;
 
-    /*
-    private static void test() throws java.security.NoSuchAlgorithmException
-    {
-        KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
-        kpg.initialize(2048);
-        KeyPair kp = kpg.genKeyPair();
-        Key publicKey = kp.getPublic();
-        Key privateKey = kp.getPrivate();
-    }
-    */
 
-    private File makeOutputFile(SharedPreferences prefs) {
+    private File makeOutputFile() {
         File dir = new File(DEFAULT_STORAGE_LOCATION);
 
         // test dir for existence and writeability
@@ -90,13 +82,11 @@ public class RecordService
 
 //        MIC-1 VOICE_CALL- 4  VOICE_UPLINK-2 VOICE_DOWNLINK-3
 
-        int audiosource = 2;
-        prefix += "-channel" + audiosource + "-";
+        prefix += "-channel" + Const.AUDIO_SOURCE + "-";
 
         // create suffix based on format
         String suffix = "";
-        int audioformat = 2;
-        switch (audioformat) {
+        switch (Const.AUDIO_FORMAT) {
             case MediaRecorder.OutputFormat.THREE_GPP:
                 suffix = ".3gpp";
                 break;
@@ -125,8 +115,6 @@ public class RecordService
     }
 
     public void onStart(Intent intent, int startId) {
-        //Log.i("CallRecorder", "RecordService::onStart calling through to onStartCommand");
-        //onStartCommand(intent, 0, startId);
         //}
 
         //public int onStartCommand(Intent intent, int flags, int startId)
@@ -141,25 +129,14 @@ public class RecordService
         if (intent.getExtras() != null) {
             incomingnumber = intent.getExtras().getString("INCOMINGNUMBER");
         }
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
 
-//        Boolean shouldRecord = prefs.getBoolean(Preferences.PREF_RECORD_CALLS, true);
-//        if (!shouldRecord) {
-//            Log.i("CallRecord", "RecordService::onStartCommand with PREF_RECORD_CALLS false, not recording");
-//            //return START_STICKY;
-//            return;
-//        }
-
-        int audiosource = Const.AUDIO_SOURCE;
-        int audioformat = Const.AUDIO_FORMAT;
-
-        recording = makeOutputFile(prefs);
+        recording = makeOutputFile();
         if (recording == null) {
             recorder = null;
             return; //return 0;
         }
 
-        WriteLog.E("CallRecorder", "RecordService will config MediaRecorder with audiosource: " + audiosource + " audioformat: " + audioformat);
+        WriteLog.E("CallRecorder", "RecordService will config MediaRecorder with audiosource: " + Const.AUDIO_SOURCE + " audioformat: " + Const.AUDIO_FORMAT);
         try {
             // These calls will throw exceptions unless you set the 
             // android.permission.RECORD_AUDIO permission for your app
@@ -171,8 +148,8 @@ public class RecordService
 //            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
 //            Log.d("CallRecorder", "set encoder default");
 
-            recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
-            recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+            recorder.setAudioSource(Const.AUDIO_SOURCE);
+            recorder.setOutputFormat(Const.AUDIO_FORMAT);
             recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
             recorder.setOutputFile(recording.getAbsolutePath());
@@ -225,18 +202,6 @@ public class RecordService
             recorder.release();
             Toast t = Toast.makeText(getApplicationContext(), "CallRecorder finished recording call to " + recording, Toast.LENGTH_LONG);
             t.show();
-
-            /*
-            // encrypt the recording
-            String keyfile = "/sdcard/keyring";
-            try {
-                //PGPPublicKey k = readPublicKey(new FileInputStream(keyfile));
-                test();
-            } catch (java.security.NoSuchAlgorithmException e) {
-                Log.e("CallRecorder", "RecordService::onDestroy crypto test failed: ", e);
-            }
-            //encrypt(recording);
-            */
         }
 
         updateNotification(false);

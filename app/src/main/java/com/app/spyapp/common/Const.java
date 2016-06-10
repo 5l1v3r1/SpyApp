@@ -43,6 +43,7 @@ public class Const {
 
 
     //CALL RECORD
+    //MIC-1 VOICE_CALL- 4  VOICE_UPLINK-2 VOICE_DOWNLINK-3
     public static final int AUDIO_SOURCE = 1;
     public static final int AUDIO_FORMAT = 2;
 
